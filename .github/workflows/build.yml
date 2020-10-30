@@ -1,4 +1,4 @@
-name: Test, Sonar and Deploy.
+name: Test, Sonar and Deploy
 
 on:
   push:
