@@ -12,7 +12,7 @@ To use this project:
 - clone this project
 - run `./mvnw clean install -Dgpg.skip=true`, on Windows run `.\mvnw.cmd clean install -D"gpg.skip=true"`
 
-[github-actions-build-image]: https://github.com/polykhel/sbp-parent/workflows/https://github.com/polykhel/sbp-parent/workflows/Test,%20Sonar%20and%20Deploy/badge.svg
+[github-actions-build-image]: https://github.com/polykhel/sbp-parent/workflows/Build/badge.svg
 [github-actions-url]: https://github.com/polykhel/sbp-parent/actions
 
 ## Analysis
