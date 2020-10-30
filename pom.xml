@@ -66,7 +66,6 @@
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
 
-        <sonar.projectKey>polykhel_sbp-parent</sonar.projectKey>
         <sonar.organization>polykhel</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>

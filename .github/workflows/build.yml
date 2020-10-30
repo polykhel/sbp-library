@@ -36,7 +36,7 @@ jobs:
       - name: Run Sonar analysis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mvn -ntp --batch-mode initialize org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: mvn -ntp --batch-mode initialize org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -Dsonar.projectKey=sbp-parent -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       - name: Deploy to Github Packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
