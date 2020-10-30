@@ -10,6 +10,9 @@ root = true
 indent_style = space
 indent_size = 4
 
+[*yml]
+indent_size = 2
+
 # Keep these unchanged
 end_of_line = lf
 charset = utf-8

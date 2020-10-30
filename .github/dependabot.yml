@@ -1,0 +1,22 @@
+version: 2
+updates:
+    # Dependencies for sbp-dependencies
+    - package-ecosystem: 'maven'
+        directory: '/sbp-dependencies'
+        schedule:
+            interval: 'daily'
+        open-pull-requests-limit: 10
+
+    # Dependencies for sbp-infrastructure
+    -   package-ecosystem: 'maven'
+        directory: '/sbp-infrastructure'
+        schedule:
+            interval: 'daily'
+        open-pull-requests-limit: 10
+
+    # Dependencies for GitHub Actions
+    -   package-ecosystem: 'github-actions'
+        directory: '/'
+        schedule:
+            interval: 'daily'
+        open-pull-requests-limit: 10
