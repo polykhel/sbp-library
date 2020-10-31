@@ -1,10 +1,5 @@
 package com.polykhel.sbp.web.rest.vm;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -12,10 +7,6 @@ import java.util.Set;
 /**
  * View Model object for representing a user, with his authorities.
  */
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@ToString
 public class UserVM {
 
     @NotNull
@@ -23,4 +14,28 @@ public class UserVM {
     private String login;
 
     private Set<String> authorities;
+
+    public UserVM() {
+    }
+
+    public UserVM(@NotNull @Size(min = 1, max = 50) String login, Set<String> authorities) {
+        this.login = login;
+        this.authorities = authorities;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public Set<String> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String toString() {
+        return "UserVM{" +
+            "login='" + login + '\'' +
+            ", authorities=" + authorities +
+            '}';
+    }
 }

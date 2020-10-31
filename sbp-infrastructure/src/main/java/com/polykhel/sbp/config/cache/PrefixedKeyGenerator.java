@@ -1,6 +1,5 @@
 package com.polykhel.sbp.config.cache;
 
-import lombok.Getter;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.boot.info.BuildProperties;
@@ -29,7 +28,6 @@ import java.util.Objects;
  */
 public class PrefixedKeyGenerator implements KeyGenerator {
 
-    @Getter
     private final String prefix;
 
     /**
@@ -69,5 +67,9 @@ public class PrefixedKeyGenerator implements KeyGenerator {
     @Override
     public Object generate(Object target, Method method, Object... params) {
         return new PrefixedSimpleKey(prefix, method.getName(), params);
+    }
+
+    public String getPrefix() {
+        return prefix;
     }
 }

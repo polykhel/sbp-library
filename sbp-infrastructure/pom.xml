@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.polykhel.sbp</groupId>
         <artifactId>sbp-dependencies</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <relativePath>../sbp-dependencies/pom.xml</relativePath>
     </parent>
 
@@ -21,12 +21,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>problem-spring-web</artifactId>
@@ -243,11 +237,6 @@
                             <groupId>com.sun.xml.bind</groupId>
                             <artifactId>jaxb-impl</artifactId>
                             <version>${jaxb-impl.version}</version>
-                        </path>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

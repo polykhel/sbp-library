@@ -12,7 +12,6 @@ import ch.qos.logback.core.filter.EvaluatorFilter;
 import ch.qos.logback.core.spi.ContextAwareBase;
 import ch.qos.logback.core.spi.FilterReply;
 import com.polykhel.sbp.config.CoreProperties;
-import lombok.extern.slf4j.Slf4j;
 import net.logstash.logback.appender.LogstashTcpSocketAppender;
 import net.logstash.logback.composite.ContextJsonProvider;
 import net.logstash.logback.composite.GlobalCustomFieldsJsonProvider;
@@ -24,12 +23,14 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.net.InetSocketAddress;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Utility methods to add appenders to a {@link LoggerContext}.
  */
-@Slf4j
 public final class LoggingUtils {
 
+    private static final org.slf4j.Logger log = getLogger(LoggingUtils.class);
     public static final String LOGSTASH_APPENDER_NAME = "LOGSTASH";
     public static final String ASYNC_LOGSTASH_APPENDER_NAME = "ASYNC_LOGSTASH";
     private static final String CONSOLE_APPENDER_NAME = "CONSOLE";

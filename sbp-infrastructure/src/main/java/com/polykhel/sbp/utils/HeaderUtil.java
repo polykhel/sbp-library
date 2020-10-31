@@ -1,17 +1,20 @@
 package com.polykhel.sbp.utils;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Utility class for HTTP headers creation.
  */
-@Slf4j
 public final class HeaderUtil {
+
+    private static final Logger log = getLogger(HeaderUtil.class);
 
     private HeaderUtil() {
     }
@@ -20,8 +23,8 @@ public final class HeaderUtil {
      * Create Alert
      *
      * @param applicationName a {@link String} object.
-     * @param message a {@link String} object.
-     * @param param a {@link String} object.
+     * @param message         a {@link String} object.
+     * @param param           a {@link String} object.
      * @return a {@link org.springframework.http.HttpHeaders} object.
      */
     public static HttpHeaders createAlert(String applicationName, String message, String param) {
@@ -38,10 +41,10 @@ public final class HeaderUtil {
     /**
      * Create Entity Creation Alert
      *
-     * @param applicationName a {@link String} object.
+     * @param applicationName   a {@link String} object.
      * @param enableTranslation a boolean.
-     * @param entityName a {@link String} object.
-     * @param param a {@link String} object.
+     * @param entityName        a {@link String} object.
+     * @param param             a {@link String} object.
      * @return a {@link org.springframework.http.HttpHeaders} object.
      */
     public static HttpHeaders createEntityCreationAlert(String applicationName, boolean enableTranslation, String entityName, String param) {
@@ -53,10 +56,10 @@ public final class HeaderUtil {
     /**
      * Create Entity Update Alert
      *
-     * @param applicationName a {@link String} object.
+     * @param applicationName   a {@link String} object.
      * @param enableTranslation a boolean.
-     * @param entityName a {@link String} object.
-     * @param param a {@link String} object.
+     * @param entityName        a {@link String} object.
+     * @param param             a {@link String} object.
      * @return a {@link org.springframework.http.HttpHeaders} object.
      */
     public static HttpHeaders createEntityUpdateAlert(String applicationName, boolean enableTranslation, String entityName, String param) {
@@ -68,10 +71,10 @@ public final class HeaderUtil {
     /**
      * Create Entity Deletion Alert
      *
-     * @param applicationName a {@link String} object.
+     * @param applicationName   a {@link String} object.
      * @param enableTranslation a boolean.
-     * @param entityName a {@link String} object.
-     * @param param a {@link String} object.
+     * @param entityName        a {@link String} object.
+     * @param param             a {@link String} object.
      * @return a {@link org.springframework.http.HttpHeaders} object.
      */
     public static HttpHeaders createEntityDeletionAlert(String applicationName, boolean enableTranslation, String entityName, String param) {
@@ -83,11 +86,11 @@ public final class HeaderUtil {
     /**
      * Create Failure Alert
      *
-     * @param applicationName a {@link String} object.
+     * @param applicationName   a {@link String} object.
      * @param enableTranslation a boolean.
-     * @param entityName a {@link String} object.
-     * @param errorKey a {@link String} object.
-     * @param defaultMessage a {@link String} object.
+     * @param entityName        a {@link String} object.
+     * @param errorKey          a {@link String} object.
+     * @param defaultMessage    a {@link String} object.
      * @return a {@link org.springframework.http.HttpHeaders} object.
      */
     public static HttpHeaders createFailureAlert(String applicationName, boolean enableTranslation, String entityName, String errorKey, String defaultMessage) {

@@ -1,7 +1,5 @@
 package com.polykhel.sbp.security;
 
-import lombok.AllArgsConstructor;
-
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -89,9 +87,13 @@ public class PersistentTokenCache<T> {
         }
     }
 
-    @AllArgsConstructor
     private class Value {
         private final T token;
         private final long expire;
+
+        public Value(T token, long expire) {
+            this.token = token;
+            this.expire = expire;
+        }
     }
 }

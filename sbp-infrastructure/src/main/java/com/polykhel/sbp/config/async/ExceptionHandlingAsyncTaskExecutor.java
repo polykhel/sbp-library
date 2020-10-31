@@ -1,6 +1,6 @@
 package com.polykhel.sbp.config.async;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.task.AsyncTaskExecutor;
@@ -8,13 +8,15 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * ExceptionHandlingAsyncTaskExecutor class.
  */
-@Slf4j
 public class ExceptionHandlingAsyncTaskExecutor
     implements AsyncTaskExecutor, InitializingBean, DisposableBean {
 
+    private static final Logger log = getLogger(ExceptionHandlingAsyncTaskExecutor.class);
     static final String EXCEPTION_MESSAGE = "Caught async exception";
 
     private final AsyncTaskExecutor executor;

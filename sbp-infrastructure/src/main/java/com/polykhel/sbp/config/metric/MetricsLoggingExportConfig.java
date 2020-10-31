@@ -8,8 +8,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.dropwizard.DropwizardConfig;
 import io.micrometer.core.instrument.dropwizard.DropwizardMeterRegistry;
 import io.micrometer.core.instrument.util.HierarchicalNameMapper;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -17,6 +16,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.TimeUnit;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Console Reporter Configuration
@@ -26,9 +27,9 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 @ConditionalOnProperty("ssa.metrics.logs.enabled")
-@Slf4j
 public class MetricsLoggingExportConfig {
 
+    private static final Logger log = getLogger(MetricsLoggingExportConfig.class);
     private final CoreProperties coreProperties;
 
     public MetricsLoggingExportConfig(CoreProperties coreProperties) {
@@ -50,7 +51,7 @@ public class MetricsLoggingExportConfig {
         log.info("Initializing Metrics Log reporting");
         Marker metricsMarker = MarkerFactory.getMarker("metrics");
         final Slf4jReporter reporter = Slf4jReporter.forRegistry(dropwizardRegistry)
-            .outputTo(LoggerFactory.getLogger("metrics"))
+            .outputTo(getLogger("metrics"))
             .markWith(metricsMarker)
             .convertRatesTo(TimeUnit.SECONDS)
             .convertDurationsTo(TimeUnit.MILLISECONDS)

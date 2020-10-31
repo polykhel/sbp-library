@@ -1,6 +1,6 @@
 package com.polykhel.sbp.security;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -9,12 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Returns a 403 error code (Unauthorized) to the client.
  */
 @Component
-@Slf4j
 public class UnauthorizedEntryPoint implements AuthenticationEntryPoint {
+
+    private static final Logger log = getLogger(UnauthorizedEntryPoint.class);
 
     /**
      * Return a 401 error code to the client.

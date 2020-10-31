@@ -1,12 +1,7 @@
 package com.polykhel.sbp.web.rest.errors;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.io.Serializable;
 
-@AllArgsConstructor
-@Getter
 public class FieldErrorVM implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -17,4 +12,21 @@ public class FieldErrorVM implements Serializable {
 
     private final String message;
 
+    public FieldErrorVM(String objectName, String field, String message) {
+        this.objectName = objectName;
+        this.field = field;
+        this.message = message;
+    }
+
+    public String getObjectName() {
+        return objectName;
+    }
+
+    public String getField() {
+        return field;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

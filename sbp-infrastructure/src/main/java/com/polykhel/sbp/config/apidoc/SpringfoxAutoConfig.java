@@ -3,7 +3,7 @@ package com.polykhel.sbp.config.apidoc;
 import com.polykhel.sbp.config.CoreProperties;
 import com.polykhel.sbp.config.apidoc.customizer.CustomSpringfoxCustomizer;
 import com.polykhel.sbp.config.apidoc.customizer.SpringfoxCustomizer;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -29,6 +29,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 import static com.polykhel.sbp.utils.constants.ProfileConstants.SPRING_PROFILE_API_DOCS;
+import static org.slf4j.LoggerFactory.getLogger;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 /**
@@ -51,7 +52,6 @@ import static springfox.documentation.builders.PathSelectors.regex;
     Swagger2DocumentationConfiguration.class,
     BeanValidatorPluginsConfiguration.class
 })
-@Slf4j
 public class SpringfoxAutoConfig {
 
     static final String STARTING_MESSAGE = "Starting OpenAPI docs";
@@ -59,7 +59,7 @@ public class SpringfoxAutoConfig {
     static final String MANAGEMENT_TITLE_SUFFIX = "Management API";
     static final String MANAGEMENT_GROUP_NAME = "management";
     static final String MANAGEMENT_DESCRIPTION = "Management endpoints documentation";
-
+    private static final Logger log = getLogger(SpringfoxAutoConfig.class);
     private final CoreProperties.ApiDocs properties;
 
     /**

@@ -1,6 +1,5 @@
 package com.polykhel.sbp.web.rest.errors;
 
-import lombok.Getter;
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;
 
@@ -8,7 +7,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
 public class BadRequestAlertException extends AbstractThrowableProblem {
 
     private static final long serialVersionUID = 1L;
@@ -34,4 +32,11 @@ public class BadRequestAlertException extends AbstractThrowableProblem {
         return parameters;
     }
 
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public String getErrorKey() {
+        return errorKey;
+    }
 }

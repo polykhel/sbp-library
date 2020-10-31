@@ -1,6 +1,6 @@
 package com.polykhel.sbp.config.async;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.boot.autoconfigure.task.TaskExecutionProperties;
@@ -13,15 +13,17 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Async Configuration class.
  */
 @Configuration
 @EnableAsync
 @EnableScheduling
-@Slf4j
 public class AsyncConfig implements AsyncConfigurer {
 
+    private static final Logger log = getLogger(AsyncConfig.class);
     private final TaskExecutionProperties taskExecutionProperties;
 
     public AsyncConfig(TaskExecutionProperties taskExecutionProperties) {

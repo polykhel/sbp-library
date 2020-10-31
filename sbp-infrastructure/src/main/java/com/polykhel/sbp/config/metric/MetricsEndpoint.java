@@ -4,16 +4,19 @@ import io.micrometer.core.instrument.Timer;
 import io.micrometer.core.instrument.*;
 import io.micrometer.core.instrument.distribution.ValueAtPercentile;
 import io.micrometer.core.instrument.search.Search;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.web.annotation.WebEndpoint;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 @WebEndpoint(id = "coremetrics")
-@Slf4j
 public class MetricsEndpoint {
+
+    private static final Logger log = getLogger(MetricsEndpoint.class);
 
     /**
      * Constant <code>MISSING_NAME_TAG_MESSAGE="Missing name tag for metric {}"</code>

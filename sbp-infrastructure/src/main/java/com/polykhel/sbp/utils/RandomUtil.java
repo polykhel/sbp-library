@@ -1,6 +1,5 @@
 package com.polykhel.sbp.utils;
 
-import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.security.SecureRandom;
@@ -8,7 +7,6 @@ import java.security.SecureRandom;
 /**
  * Utility class for generating random Strings.
  */
-@NoArgsConstructor
 public final class RandomUtil {
 
     private static final int DEF_COUNT = 20;
@@ -18,6 +16,9 @@ public final class RandomUtil {
     static {
         SECURE_RANDOM = new SecureRandom();
         SECURE_RANDOM.nextBytes(new byte[64]);
+    }
+
+    public RandomUtil() {
     }
 
     /**
