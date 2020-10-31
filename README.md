@@ -14,13 +14,3 @@ To use this project:
 
 [github-actions-build-image]: https://github.com/polykhel/sbp-library/workflows/Build/badge.svg
 [github-actions-url]: https://github.com/polykhel/sbp-library/actions
-
-## Analysis
-
-[![sonar-quality-gate][sonar-quality-gate]][sonar-url] [![sonar-coverage][sonar-coverage]][sonar-url] [![sonar-bugs][sonar-bugs]][sonar-url] [![sonar-vulnerabilities][sonar-vulnerabilities]][sonar-url]
-
-[sonar-url]: https://sonarcloud.io/dashboard?id=polykhel_sbp-library
-[sonar-quality-gate]: https://sonarcloud.io/api/project_badges/measure?project=polykhel_sbp-library&metric=alert_status
-[sonar-coverage]: https://sonarcloud.io/api/project_badges/measure?project=polykhel_sbp-library&metric=coverage
-[sonar-bugs]: https://sonarcloud.io/api/project_badges/measure?project=polykhel_sbp-library&metric=bugs
-[sonar-vulnerabilities]: https://sonarcloud.io/api/project_badges/measure?project=polykhel_sbp-library&metric=vulnerabilities
