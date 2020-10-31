@@ -22,7 +22,7 @@ public class CachingHttpHeadersFilter implements Filter {
     /**
      * <p>Constructor for CachingHttpHeadersFilter.</p>
      *
-     * @param coreProperties a {@link io.github.core.config.CoreProperties} object.
+     * @param coreProperties a {@link com.polykhel.sbp.config.CoreProperties} object.
      */
     public CachingHttpHeadersFilter(CoreProperties coreProperties) {
         this.coreProperties = coreProperties;

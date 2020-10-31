@@ -12,7 +12,7 @@
 
     <groupId>com.polykhel.sbp</groupId>
     <artifactId>sbp-parent</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <packaging>pom</packaging>
     <name>Reusable Spring Boot Parent POM</name>
     <description>Reusable parent for Spring Boot projects</description>
@@ -220,7 +220,7 @@
                                             <limit>
                                                 <counter>COMPLEXITY</counter>
                                                 <value>COVEREDRATIO</value>
-                                                <minimum>0.62</minimum>
+                                                <minimum>0.60</minimum>
                                             </limit>
                                         </limits>
                                     </rule>
