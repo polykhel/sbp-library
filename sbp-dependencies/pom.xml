@@ -6,8 +6,8 @@
 
     <parent>
         <groupId>com.polykhel.sbp</groupId>
-        <artifactId>sbp-parent</artifactId>
-        <version>1.0.1</version>
+        <artifactId>sbp-library</artifactId>
+        <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 

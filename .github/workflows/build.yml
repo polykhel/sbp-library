@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-and-analyse:
-    if: github.repository == 'polykhel/sbp-parent'
+    if: github.repository == 'polykhel/sbp-library'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -33,10 +33,10 @@ jobs:
           restore-keys: ${{ runner.os }}-maven-
       - name: Test with Maven
         run: mvn test --batch-mode
-      - name: Run Sonar analysis
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mvn -ntp --batch-mode initialize org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=polykhel_sbp-parent -Dsonar.organization=polykhel -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      #      - name: Run Sonar analysis
+      #        env:
+      #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #        run: mvn -ntp --batch-mode initialize org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=polykhel_sbp-library -Dsonar.organization=polykhel -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       - name: Deploy to github packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

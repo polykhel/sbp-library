@@ -11,16 +11,16 @@
     </parent>
 
     <groupId>com.polykhel.sbp</groupId>
-    <artifactId>sbp-parent</artifactId>
-    <version>1.0.1</version>
+    <artifactId>sbp-library</artifactId>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>Reusable Spring Boot Parent POM</name>
     <description>Reusable parent for Spring Boot projects</description>
-    <url>https://github.com/polykhel/sbp-parent</url>
+    <url>https://github.com/polykhel/sbp-library</url>
 
     <organization>
-        <name />
-        <url />
+        <name/>
+        <url/>
     </organization>
     <developers>
         <developer>
@@ -68,8 +68,8 @@
     </properties>
 
     <scm>
-        <connection>scm:git:https://github.com/polykhel/sbp-parent/</connection>
-        <url>https://github.com/polykhel/sbp-parent/</url>
+        <connection>scm:git:https://github.com/polykhel/sbp-library/</connection>
+        <url>https://github.com/polykhel/sbp-library/</url>
     </scm>
 
     <modules>
@@ -89,11 +89,11 @@
             <distributionManagement>
                 <snapshotRepository>
                     <id>github</id>
-                    <url>https://maven.pkg.github.com/polykhel/sbp-parent/</url>
+                    <url>https://maven.pkg.github.com/polykhel/sbp-library/</url>
                 </snapshotRepository>
                 <repository>
                     <id>github</id>
-                    <url>https://maven.pkg.github.com/polykhel/sbp-parent</url>
+                    <url>https://maven.pkg.github.com/polykhel/sbp-library</url>
                 </repository>
             </distributionManagement>
         </profile>
