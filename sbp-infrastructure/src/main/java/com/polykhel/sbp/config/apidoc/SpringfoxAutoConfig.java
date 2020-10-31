@@ -1,10 +1,9 @@
 package com.polykhel.sbp.config.apidoc;
 
 import com.polykhel.sbp.config.CoreProperties;
-import com.polykhel.sbp.config.apidoc.customizer.CustomSwaggerCustomizer;
-import com.polykhel.sbp.config.apidoc.customizer.SwaggerCustomizer;
+import com.polykhel.sbp.config.apidoc.customizer.CustomSpringfoxCustomizer;
+import com.polykhel.sbp.config.apidoc.customizer.SpringfoxCustomizer;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -16,58 +15,72 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
-import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.util.StringUtils;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
+import springfox.documentation.oas.configuration.OpenApiDocumentationConfiguration;
 import springfox.documentation.schema.AlternateTypeRule;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Server;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration;
 
-import javax.servlet.Servlet;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-import static com.polykhel.sbp.utils.constants.ProfileConstants.SPRING_PROFILE_SWAGGER;
+import static com.polykhel.sbp.utils.constants.ProfileConstants.SPRING_PROFILE_API_DOCS;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 /**
- * Springfox Swagger configuration.
+ * Springfox OpenAPI configuration.
  * <p>
  * Warning! When having a lot of REST endpoints, Springfox can become a performance issue.
- * In that case, you can use the "no-swagger" Spring profile, so that this bean is ignored.
+ * In that case, you can use the "no-api-docs" Spring profile, so that this bean is ignored.
  */
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnClass({
     ApiInfo.class,
     BeanValidatorPluginsConfiguration.class,
-    Servlet.class,
-    DispatcherServlet.class,
     Docket.class
 })
-@Profile(SPRING_PROFILE_SWAGGER)
+@Profile(SPRING_PROFILE_API_DOCS)
 @AutoConfigureAfter(CoreProperties.class)
-@EnableSwagger2
-@Import(BeanValidatorPluginsConfiguration.class)
+@Import({
+    OpenApiDocumentationConfiguration.class,
+    Swagger2DocumentationConfiguration.class,
+    BeanValidatorPluginsConfiguration.class
+})
 @Slf4j
-public class SwaggerAutoConfig {
+public class SpringfoxAutoConfig {
 
-    static final String STARTING_MESSAGE = "Starting Swagger";
-    static final String STARTED_MESSAGE = "Started Swagger in {} ms";
+    static final String STARTING_MESSAGE = "Starting OpenAPI docs";
+    static final String STARTED_MESSAGE = "Started OpenAPI docs in {} ms";
     static final String MANAGEMENT_TITLE_SUFFIX = "Management API";
     static final String MANAGEMENT_GROUP_NAME = "management";
     static final String MANAGEMENT_DESCRIPTION = "Management endpoints documentation";
 
-    private final CoreProperties.Swagger properties;
+    private final CoreProperties.ApiDocs properties;
 
-    public SwaggerAutoConfig(CoreProperties properties) {
-        this.properties = properties.getSwagger();
+    /**
+     * <p>Constructor for SpringfoxAutoConfig.</p>
+     *
+     * @param properties a {@link com.polykhel.sbp.config.CoreProperties} object.
+     */
+    public SpringfoxAutoConfig(CoreProperties properties) {
+        this.properties = properties.getApiDocs();
     }
 
+    /**
+     * Springfox configuration for the OpenAPI docs.
+     *
+     * @param springfoxCustomizers Springfox customizers
+     * @param alternateTypeRules   alternate type rules
+     * @return the Springfox configuration
+     */
     @Bean
-    @ConditionalOnMissingBean(name = "swaggerSpringfoxApiDocket")
-    public Docket swaggerSpringfoxApiDocket(List<SwaggerCustomizer> swaggerCustomizers,
+    @ConditionalOnMissingBean(name = "openAPISpringfoxApiDocket")
+    public Docket openAPISpringfoxApiDocket(List<SpringfoxCustomizer> springfoxCustomizers,
                                             ObjectProvider<AlternateTypeRule[]> alternateTypeRules) {
         log.debug(STARTING_MESSAGE);
         StopWatch watch = new StopWatch();
@@ -75,8 +88,8 @@ public class SwaggerAutoConfig {
 
         Docket docket = createDocket();
 
-        // Apply all SwaggerCustomizers orderly
-        swaggerCustomizers.forEach(customizer -> customizer.customize(docket));
+        // Apply all OpenAPICustomizers orderly.
+        springfoxCustomizers.forEach(customizer -> customizer.customize(docket));
 
         // Add all AlternateTypeRules if available in spring bean factory.
         // Also you can add your rules in a customizer bean above.
@@ -87,30 +100,26 @@ public class SwaggerAutoConfig {
         return docket;
     }
 
-    /**
-     * Custom Swagger Customizer
-     *
-     * @return a Custom Swagger Customizer
-     */
     @Bean
-    public CustomSwaggerCustomizer customSwaggerCustomizer() {
-        return new CustomSwaggerCustomizer(properties);
+    public CustomSpringfoxCustomizer customSwaggerCustomizer() {
+        return new CustomSpringfoxCustomizer(properties);
     }
 
     /**
-     * Springfox configuration for the management endpoints (actuator) Swagger docs.
+     * Springfox configuration for the management endpoints (actuator) OpenAPI docs.
      *
      * @param appName               the application name
      * @param managementContextPath the path to access management endpoints
-     * @return the Swagger Springfox configuration
+     * @return the Springfox configuration
      */
     @Bean
     @ConditionalOnClass(name = "org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties")
     @ConditionalOnProperty("management.endpoints.web.base-path")
     @ConditionalOnExpression("'${management.endpoints.web.base-path}'.length() > 0")
-    @ConditionalOnMissingBean(name = "swaggerSpringfoxManagementDocket")
-    public Docket swaggerSpringfoxManagementDocket(@Value("${spring.application.name:application}") String appName,
+    @ConditionalOnMissingBean(name = "openAPISpringfoxManagementDocket")
+    public Docket openAPISpringfoxManagementDocket(@Value("${spring.application.name:application}") String appName,
                                                    @Value("${management.endpoints.web.base-path}") String managementContextPath) {
+
         ApiInfo apiInfo = new ApiInfo(
             StringUtils.capitalize(appName) + " " + MANAGEMENT_TITLE_SUFFIX,
             MANAGEMENT_DESCRIPTION,
@@ -122,7 +131,14 @@ public class SwaggerAutoConfig {
             new ArrayList<>()
         );
 
-        return createDocket()
+        Docket docket = createDocket();
+
+        for (CoreProperties.ApiDocs.Server server : properties.getServers()) {
+            docket.servers(new Server(server.getName(), server.getUrl(), server.getDescription(),
+                Collections.emptyList(), Collections.emptyList()));
+        }
+
+        return docket
             .apiInfo(apiInfo)
             .useDefaultResponseMessages(properties.isUseDefaultResponseMessages())
             .groupName(MANAGEMENT_GROUP_NAME)
@@ -138,12 +154,12 @@ public class SwaggerAutoConfig {
     }
 
     /**
-     * Create Docket
+     * <p>createDocket.</p>
      *
-     * @return a {@link Docket} object.
+     * @return a {@link springfox.documentation.spring.web.plugins.Docket} object.
      */
     protected Docket createDocket() {
-        return new Docket(DocumentationType.SWAGGER_2);
+        return new Docket(DocumentationType.OAS_30);
     }
 
 }

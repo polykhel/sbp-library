@@ -4,10 +4,10 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 /**
  * Callback interface that can be implemented by beans wishing to further customize the
- * {@link Docket} in Springfox.
+ * {@link springfox.documentation.spring.web.plugins.Docket} in Springfox.
  */
 @FunctionalInterface
-public interface SwaggerCustomizer {
+public interface SpringfoxCustomizer {
 
     /**
      * Customize the Springfox Docket.

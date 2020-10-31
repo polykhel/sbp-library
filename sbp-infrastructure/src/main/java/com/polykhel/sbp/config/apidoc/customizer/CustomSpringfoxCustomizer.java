@@ -6,28 +6,35 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.Server;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
 /**
- * A swagger customizer to setup {@link Docket} with custom settings.
+ * A swagger customizer to setup {@link springfox.documentation.spring.web.plugins.Docket} with custom settings.
  */
-public class CustomSwaggerCustomizer implements SwaggerCustomizer, Ordered {
+public class CustomSpringfoxCustomizer implements SpringfoxCustomizer, Ordered {
 
     /**
      * The default order for the customizer.
      */
     public static final int DEFAULT_ORDER = 0;
-    private final CoreProperties.Swagger properties;
+    private final CoreProperties.ApiDocs properties;
     private int order = DEFAULT_ORDER;
 
-    public CustomSwaggerCustomizer(CoreProperties.Swagger properties) {
+    /**
+     * <p>Constructor for CustomSpringfoxCustomizer.</p>
+     *
+     * @param properties a {@link com.polykhel.sbp.config.CoreProperties.ApiDocs} object.
+     */
+    public CustomSpringfoxCustomizer(CoreProperties.ApiDocs properties) {
         this.properties = properties;
     }
 
@@ -51,6 +58,11 @@ public class CustomSwaggerCustomizer implements SwaggerCustomizer, Ordered {
             properties.getLicenseUrl(),
             new ArrayList<>()
         );
+
+        for (CoreProperties.ApiDocs.Server server : properties.getServers()) {
+            docket.servers(new Server(server.getName(), server.getUrl(), server.getDescription(),
+                Collections.emptyList(), Collections.emptyList()));
+        }
 
         docket.host(properties.getHost())
             .protocols(new HashSet<>(Arrays.asList(properties.getProtocols())))
