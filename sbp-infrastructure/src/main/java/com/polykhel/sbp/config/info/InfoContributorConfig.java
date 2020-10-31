@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
- * Auto-configuration for custom {@link InfoContributor}s.
+ * Auto-configuration for custom {@link org.springframework.boot.actuate.info.InfoContributor}s.
  */
 @Configuration
 @AutoConfigureAfter(InfoContributorAutoConfiguration.class)

@@ -1,7 +1,6 @@
 package com.polykhel.sbp.config.liquibase;
 
 import liquibase.integration.spring.SpringLiquibase;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.liquibase.DataSourceClosingSpringLiquibase;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
@@ -9,7 +8,9 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
+import java.util.Optional;
 import java.util.concurrent.Executor;
+import java.util.function.Supplier;
 
 /**
  * Utility class for handling SpringLiquibase.
@@ -23,15 +24,21 @@ public class SpringLiquibaseUtil {
     private SpringLiquibaseUtil() {
     }
 
-    public static SpringLiquibase createSpringLiquibase(DataSource liquibaseDatasource,
-                                                        LiquibaseProperties liquibaseProperties,
-                                                        DataSource dataSource,
-                                                        DataSourceProperties dataSourceProperties) {
+    /**
+     * <p>createSpringLiquibase.</p>
+     *
+     * @param liquibaseDatasource  a {@link javax.sql.DataSource} object.
+     * @param liquibaseProperties  a {@link org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties} object.
+     * @param dataSource           a {@link javax.sql.DataSource} object.
+     * @param dataSourceProperties a {@link org.springframework.boot.autoconfigure.jdbc.DataSourceProperties} object.
+     * @return a {@link liquibase.integration.spring.SpringLiquibase} object.
+     */
+    public static SpringLiquibase createSpringLiquibase(DataSource liquibaseDatasource, LiquibaseProperties liquibaseProperties, DataSource dataSource, DataSourceProperties dataSourceProperties) {
         SpringLiquibase liquibase;
         DataSource liquibaseDataSource = getDataSource(liquibaseDatasource, liquibaseProperties, dataSource);
-        if (liquibaseDatasource != null) {
+        if (liquibaseDataSource != null) {
             liquibase = new SpringLiquibase();
-            liquibase.setDataSource(liquibaseDatasource);
+            liquibase.setDataSource(liquibaseDataSource);
             return liquibase;
         }
         liquibase = new DataSourceClosingSpringLiquibase();
@@ -39,19 +46,26 @@ public class SpringLiquibaseUtil {
         return liquibase;
     }
 
-    public static SpringLiquibase createAsyncSpringLiquibase(Environment env, Executor executor,
-                                                             DataSource liquibaseDatasource, LiquibaseProperties liquibaseProperties,
-                                                             DataSource dataSource, DataSourceProperties dataSourceProperties) {
-        AsyncSpringLiquibase liquibase;
+    /**
+     * <p>createAsyncSpringLiquibase.</p>
+     *
+     * @param env                  a {@link org.springframework.core.env.Environment} object.
+     * @param executor             a {@link java.util.concurrent.Executor} object.
+     * @param liquibaseDatasource  a {@link javax.sql.DataSource} object.
+     * @param liquibaseProperties  a {@link org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties} object.
+     * @param dataSource           a {@link javax.sql.DataSource} object.
+     * @param dataSourceProperties a {@link org.springframework.boot.autoconfigure.jdbc.DataSourceProperties} object.
+     * @return a {@link com.polykhel.sbp.config.liquibase.AsyncSpringLiquibase} object.
+     */
+    public static AsyncSpringLiquibase createAsyncSpringLiquibase(Environment env, Executor executor, DataSource liquibaseDatasource, LiquibaseProperties liquibaseProperties, DataSource dataSource, DataSourceProperties dataSourceProperties) {
+        AsyncSpringLiquibase liquibase = new AsyncSpringLiquibase(executor, env);
         DataSource liquibaseDataSource = getDataSource(liquibaseDatasource, liquibaseProperties, dataSource);
         if (liquibaseDataSource != null) {
-            liquibase = new AsyncSpringLiquibase(executor, env);
             liquibase.setCloseDataSourceOnceMigrated(false);
             liquibase.setDataSource(liquibaseDataSource);
-            return liquibase;
+        } else {
+            liquibase.setDataSource(createNewDataSource(liquibaseProperties, dataSourceProperties));
         }
-        liquibase = new AsyncSpringLiquibase(executor, env);
-        liquibase.setDataSource(createNewDataSource(liquibaseProperties, dataSourceProperties));
         return liquibase;
     }
 
@@ -66,10 +80,13 @@ public class SpringLiquibaseUtil {
     }
 
     private static DataSource createNewDataSource(LiquibaseProperties liquibaseProperties, DataSourceProperties dataSourceProperties) {
-        String url = StringUtils.defaultString(liquibaseProperties.getUrl(), dataSourceProperties.determineUrl());
-        String user = StringUtils.defaultString(liquibaseProperties.getUser(), dataSourceProperties.determineUsername());
-        String password = StringUtils.defaultString(liquibaseProperties.getPassword(), dataSourceProperties.determinePassword());
+        String url = getProperty(liquibaseProperties::getUrl, dataSourceProperties::determineUrl);
+        String user = getProperty(liquibaseProperties::getUser, dataSourceProperties::determineUsername);
+        String password = getProperty(liquibaseProperties::getPassword, dataSourceProperties::determinePassword);
         return DataSourceBuilder.create().url(url).username(user).password(password).build();
     }
 
+    private static String getProperty(Supplier<String> property, Supplier<String> defaultValue) {
+        return Optional.of(property).map(Supplier::get).orElseGet(defaultValue);
+    }
 }

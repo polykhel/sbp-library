@@ -9,13 +9,16 @@ import java.sql.SQLException;
 
 /**
  * Utility class to configure H2 in development.
+ * <p>
+ * We don't want to include H2 when we are packaging for the "prod" profile and won't
+ * actually need it, so we have to load / invoke things at runtime through reflection.
  */
 public class H2ConfigHelper {
     /**
      * Create Server
      *
-     * @return a {@link Object} object.
-     * @throws SQLException if any.
+     * @return a {@link java.lang.Object} object.
+     * @throws java.sql.SQLException if any.
      */
     public static Object createServer() throws SQLException {
         return createServer("9092");

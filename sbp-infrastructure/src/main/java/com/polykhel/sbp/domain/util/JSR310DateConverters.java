@@ -1,4 +1,4 @@
-package com.polykhel.sbp.util;
+package com.polykhel.sbp.domain.util;
 
 import org.springframework.core.convert.converter.Converter;
 
@@ -6,6 +6,9 @@ import javax.annotation.Nullable;
 import java.time.*;
 import java.util.Date;
 
+/**
+ * <p>JSR310DateConverters class.</p>
+ */
 public final class JSR310DateConverters {
 
     private JSR310DateConverters() {

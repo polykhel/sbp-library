@@ -18,6 +18,12 @@ public class CachingHttpHeadersFilter implements Filter {
     private final CoreProperties coreProperties;
     private long cacheTimeToLive = DEFAULT_SECONDS_TO_LIVE;
 
+
+    /**
+     * <p>Constructor for CachingHttpHeadersFilter.</p>
+     *
+     * @param coreProperties a {@link io.github.core.config.CoreProperties} object.
+     */
     public CachingHttpHeadersFilter(CoreProperties coreProperties) {
         this.coreProperties = coreProperties;
     }
@@ -26,9 +32,16 @@ public class CachingHttpHeadersFilter implements Filter {
      * {@inheritDoc}
      */
     @Override
-    public void init(FilterConfig filterConfig) {
-        cacheTimeToLive =
-            TimeUnit.DAYS.toMillis(coreProperties.getHttp().getCache().getTimeToLiveInDays());
+    public void init(FilterConfig filterConfig) throws ServletException {
+        cacheTimeToLive = TimeUnit.DAYS.toMillis(coreProperties.getHttp().getCache().getTimeToLiveInDays());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void destroy() {
+        // Nothing to destroy
     }
 
     /**
@@ -37,21 +50,15 @@ public class CachingHttpHeadersFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
         throws IOException, ServletException {
+
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.setHeader("Cache-Control", "max-age=" + cacheTimeToLive);
+
+        httpResponse.setHeader("Cache-Control", "max-age=" + cacheTimeToLive + ", public");
         httpResponse.setHeader("Pragma", "cache");
 
-        // setting expires header for proxy caching
+        // Setting Expires header, for proxy caching
         httpResponse.setDateHeader("Expires", cacheTimeToLive + System.currentTimeMillis());
 
         chain.doFilter(request, response);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void destroy() {
-        // do nothing
     }
 }

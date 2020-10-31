@@ -2,6 +2,7 @@ package com.polykhel.sbp.security.ssl;
 
 import io.undertow.UndertowOptions;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
@@ -20,7 +21,8 @@ import org.springframework.context.annotation.Configuration;
  * @see <a href="https://github.com/ssllabs/research/wiki/SSL-and-TLS-Deployment-Best-Practices#25-use-forward-secrecy" target="_blank">More explanation on perfect forward secrecy</a>
  */
 @Configuration
-@ConditionalOnClass({UndertowServletWebServerFactory.class, UndertowOptions.class})
+@ConditionalOnBean({UndertowServletWebServerFactory.class})
+@ConditionalOnClass(UndertowOptions.class)
 @ConditionalOnProperty({"server.ssl.ciphers", "server.ssl.key-store"})
 @Slf4j
 public class UndertowSSLConfig {

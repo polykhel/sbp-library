@@ -22,9 +22,7 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
      */
     public static final String QUOTE = "%22";
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Locale resolveLocale(HttpServletRequest request) {
         parseAngularCookieIfNecessary(request);
@@ -35,17 +33,17 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
      * {@inheritDoc}
      */
     @Override
-    public LocaleContext resolveLocaleContext(HttpServletRequest request) {
+    public LocaleContext resolveLocaleContext(final HttpServletRequest request) {
         parseAngularCookieIfNecessary(request);
         return new TimeZoneAwareLocaleContext() {
             @Override
-            public TimeZone getTimeZone() {
-                return (TimeZone) request.getAttribute(TIME_ZONE_REQUEST_ATTRIBUTE_NAME);
+            public Locale getLocale() {
+                return (Locale) request.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME);
             }
 
             @Override
-            public Locale getLocale() {
-                return (Locale) request.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME);
+            public TimeZone getTimeZone() {
+                return (TimeZone) request.getAttribute(TIME_ZONE_REQUEST_ATTRIBUTE_NAME);
             }
         };
     }
@@ -55,21 +53,20 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
      */
     @Override
     public void addCookie(HttpServletResponse response, String cookieValue) {
+        // Mandatory cookie modification for AngularJS to support the locale switching on the server side.
         super.addCookie(response, quote(cookieValue));
-    }
-
-    private String quote(String cookieValue) {
-        return QUOTE + cookieValue + QUOTE;
     }
 
     private void parseAngularCookieIfNecessary(HttpServletRequest request) {
         if (request.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME) == null) {
+            // Retrieve and parse cookie value.
             Cookie cookie = WebUtils.getCookie(request, getCookieName());
             Locale locale = null;
             TimeZone timeZone = null;
             if (cookie != null) {
                 String value = cookie.getValue();
 
+                // Remove the double quote
                 value = StringUtils.replace(value, QUOTE, "");
 
                 String localePart = value;
@@ -79,28 +76,24 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
                     localePart = value.substring(0, spaceIndex);
                     timeZonePart = value.substring(spaceIndex + 1);
                 }
-                locale =
-                    !"-".equals(localePart)
-                        ? StringUtils.parseLocaleString(localePart.replace('-', '_'))
-                        : null;
+                locale = !"-".equals(localePart) ? StringUtils.parseLocaleString(localePart.replace('-', '_')) : null;
                 if (timeZonePart != null) {
                     timeZone = StringUtils.parseTimeZoneString(timeZonePart);
                 }
                 if (logger.isTraceEnabled()) {
-                    logger.trace(
-                        "Parsed cookie value["
-                            + cookie.getValue()
-                            + "] into locale '"
-                            + locale
-                            + "'"
-                            + (timeZone != null ? " and time zone '" + timeZone.getID() + "'" : ""));
+                    logger.trace("Parsed cookie value [" + cookie.getValue() + "] into locale '" + locale +
+                        "'" + (timeZone != null ? " and time zone '" + timeZone.getID() + "'" : ""));
                 }
             }
-            request.setAttribute(
-                LOCALE_REQUEST_ATTRIBUTE_NAME, locale != null ? locale : determineDefaultLocale(request));
-            request.setAttribute(
-                TIME_ZONE_REQUEST_ATTRIBUTE_NAME,
+            request.setAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME,
+                locale != null ? locale : determineDefaultLocale(request));
+
+            request.setAttribute(TIME_ZONE_REQUEST_ATTRIBUTE_NAME,
                 timeZone != null ? timeZone : determineDefaultTimeZone(request));
         }
+    }
+
+    String quote(String string) {
+        return QUOTE + string + QUOTE;
     }
 }

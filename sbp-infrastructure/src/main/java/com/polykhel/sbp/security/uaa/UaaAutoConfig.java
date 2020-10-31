@@ -15,6 +15,11 @@ public class UaaAutoConfig {
 
     private final CoreProperties coreProperties;
 
+    /**
+     * <p>Constructor for UaaAutoConfiguration.</p>
+     *
+     * @param coreProperties a {@link com.polykhel.sbp.config.CoreProperties} object.
+     */
     public UaaAutoConfig(CoreProperties coreProperties) {
         this.coreProperties = coreProperties;
     }

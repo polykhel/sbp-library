@@ -4,7 +4,6 @@ import com.polykhel.sbp.utils.constants.PropertyDefaults;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
-import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 
 import javax.validation.constraints.NotNull;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Properties for SSA configured in the {@code application.yml}.
+ * Properties configured in the {@code application.yml}.
  *
  * <p>Also loads properties from the git.properties and META-INF/build-info.properties files if they
  * are found in the classpath.
@@ -24,7 +23,6 @@ import java.util.Map;
     @PropertySource(value = "classpath:git.properties", ignoreResourceNotFound = true),
     @PropertySource(value = "classpath:META-INF/build-info.properties", ignoreResourceNotFound = true)
 })
-@Component
 public class CoreProperties {
 
     private final Async async = new Async();
@@ -310,23 +308,8 @@ public class CoreProperties {
 
         public static class Hazelcast {
 
-            private final ManagementCenter managementCenter = new ManagementCenter();
             private int timeToLiveSeconds = PropertyDefaults.Cache.Hazelcast.timeToLiveSeconds;
             private int backupCount = PropertyDefaults.Cache.Hazelcast.backupCount;
-
-            /**
-             * In the Hazelcast v4.x, the cluster node doesn't expose
-             * configurations to connect to the management center. Setting up
-             * of this property doesn't provide any behavior and has been
-             * retained for the backward compatibility, and should be
-             * removed in the next major release of the JHipster
-             *
-             * @return a {@link com.polykhel.sbp.config.CoreProperties.Cache.Hazelcast.ManagementCenter} object.
-             */
-            @Deprecated
-            public ManagementCenter getManagementCenter() {
-                return managementCenter;
-            }
 
             public int getTimeToLiveSeconds() {
                 return timeToLiveSeconds;
@@ -344,47 +327,6 @@ public class CoreProperties {
                 this.backupCount = backupCount;
             }
 
-            /**
-             * In the Hazelcast v4.x, the cluster node doesn't expose
-             * configurations to connect to the management center. Setting up
-             * of this class properties don't provide any behavior and has
-             * been retained for the backward compatibility, and should be
-             * removed in the next major release of the JHipster
-             */
-            @Deprecated
-            public static class ManagementCenter {
-
-                private boolean enabled = PropertyDefaults.Cache.Hazelcast.ManagementCenter.enabled;
-
-                private int updateInterval = PropertyDefaults.Cache.Hazelcast.ManagementCenter.updateInterval;
-
-                private String url = PropertyDefaults.Cache.Hazelcast.ManagementCenter.url;
-
-                public boolean isEnabled() {
-                    return enabled;
-                }
-
-                public void setEnabled(boolean enabled) {
-                    this.enabled = enabled;
-                }
-
-                public int getUpdateInterval() {
-                    return updateInterval;
-                }
-
-                public void setUpdateInterval(int updateInterval) {
-                    this.updateInterval = updateInterval;
-                }
-
-                public String getUrl() {
-                    return url;
-                }
-
-                public void setUrl(String url) {
-                    this.url = url;
-                }
-
-            }
         }
 
         public static class Caffeine {
