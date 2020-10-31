@@ -12,7 +12,7 @@
 
     <groupId>com.polykhel.sbp</groupId>
     <artifactId>sbp-library</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>pom</packaging>
     <name>Reusable Spring Boot Parent POM</name>
     <description>Reusable parent for Spring Boot projects</description>
@@ -93,7 +93,7 @@
                 </snapshotRepository>
                 <repository>
                     <id>github</id>
-                    <url>https://maven.pkg.github.com/polykhel/sbp-library</url>
+                    <url>https://maven.pkg.github.com/polykhel/sbp-library/</url>
                 </repository>
             </distributionManagement>
         </profile>
